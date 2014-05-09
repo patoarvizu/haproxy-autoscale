@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+var commander = require('commander');
+var package = require('./package.json');
+var updateHaproxy = require('./lib/updateHaproxy.js');
+var AWS = require('aws-sdk');
+
+AWS.config.loadFromPath('./haproxy-autoscale-config.json');
+
+var updateHaproxyConfiguration = function() {
+  updateHaproxy(commander.system, commander.environment, commander.private)
+};
+
+commander
+  .version(package.version)
+  .option('-s, --system <system>', 'The system to monitor for new auto-scaled instances (ssrcluster, orc, synapse, etc.)')
+  .option('-e, --environment <environment>', 'The environment on which to look for auto-scaled instances')
+  .option('-p, --private', 'Enables private ip load balancing')
+
+commander.command('update')
+  .description('Update HAProxy configuration')
+  .action(updateHaproxyConfiguration);
+  
+commander.parse(process.argv);
+
+if (!commander.args.length) commander.help();

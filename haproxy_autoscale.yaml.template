@@ -1,0 +1,10 @@
+---
+
+haproxy::balancermember::server_names:
+  {% for x in ips -%}
+  - {{ system + loop.index0}}
+  {% endfor %}
+haproxy::balancermember::ipaddresses:
+  {% for x in ips -%}
+  - {{ ips[loop.index0]}}
+  {% endfor %}
