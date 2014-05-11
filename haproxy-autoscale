@@ -5,7 +5,7 @@ var package = require('./package.json');
 var updateHaproxy = require('./lib/updateHaproxy.js');
 var AWS = require('aws-sdk');
 
-AWS.config.loadFromPath('./haproxy-autoscale-config.json');
+AWS.config.loadFromPath(__dirname + '/haproxy-autoscale-config.json');
 
 var updateHaproxyConfiguration = function() {
   updateHaproxy(commander.system, commander.environment, commander.private)
